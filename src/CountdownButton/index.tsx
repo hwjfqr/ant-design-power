@@ -11,23 +11,30 @@ interface CountdownButtonType extends ButtonProps {
    */
   maxSecondNum?: number;
   /**
-   * 最大秒数
+   * 按钮默认文本
    */
   txt?: string;
   /**
-   * 最大秒数
+   * 加载时按钮文本
    */
   loadingTxt?: string;
   /**
-   * 最大秒数
+   * 禁用时按钮文本
    */
-  handleOnClick: (cb: () => void) => void;
+  disabledTxt?: (s: number) => string;
+  /**
+   * 点击按钮时触发的函数，其参数 completeCallback 需要在接口请求完毕后调用，用于告知组件接口请求已完成。
+   */
+  handleOnClick: (completeCallback: () => void) => void;
 }
 function CountdownButton({
   maxSecondNum = MAX_SECOND_NUM,
   txt = '获取验证码',
   loadingTxt = '发送中',
-  handleOnClick = () => {},
+  disabledTxt = (s) => `${s} 秒后重试`,
+  handleOnClick = (completeCallback) => {
+    completeCallback();
+  },
   ...rest
 }: CountdownButtonType) {
   const [authCodeArgs, setAuthCodeArgs] = useState({
@@ -52,7 +59,7 @@ function CountdownButton({
     return () => window.clearInterval(timer);
   }, [authCodeArgs.timing]);
 
-  const successCallback = () => {
+  const completeCallback = () => {
     setAuthCodeArgs({
       ...authCodeArgs,
       timing: true,
@@ -62,15 +69,16 @@ function CountdownButton({
   return (
     <Button
       disabled={authCodeArgs.timing}
+      style={{ minWidth: 100 }}
       onClick={() => {
-        handleOnClick(successCallback);
+        handleOnClick(completeCallback);
       }}
       {...rest}
     >
       {rest.loading
         ? loadingTxt
         : authCodeArgs.timing
-        ? authCodeArgs.count
+        ? disabledTxt(authCodeArgs.count)
         : txt}
     </Button>
   );
