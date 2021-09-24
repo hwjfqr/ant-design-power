@@ -20,18 +20,16 @@ function CountdownButtonDemo() {
   };
 
   return (
-    <div>
-      <CountdownButton
-        loading={loading}
-        handleOnClick={async (completeCallback) => {
-          const code = await getCode();
-          console.log(`验证码：${code}`);
-          completeCallback();
-        }}
-      >
-        获取验证码
-      </CountdownButton>
-    </div>
+    <CountdownButton
+      loading={loading}
+      onClick={async (completeCallback) => {
+        const code = await getCode();
+        console.log(`验证码：${code}`);
+        completeCallback();
+      }}
+    >
+      获取验证码
+    </CountdownButton>
   );
 }
 

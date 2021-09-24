@@ -1,10 +1,12 @@
-import Foo from './Foo';
 import CountdownButton from './CountdownButton';
 import TagSelector from './TagSelector';
+import ModalForm from './ModalForm';
+import ModalDetail from './ModalDetail';
 
-export { Foo, CountdownButton, TagSelector };
+export { CountdownButton, TagSelector, ModalForm, ModalDetail };
 export default {
-  Foo,
   CountdownButton,
   TagSelector,
+  ModalForm,
+  ModalDetail,
 };

@@ -8,18 +8,18 @@ function CountdownButtonDemo() {
     { label: '广州', value: 'Guangzhou' },
     { label: '深圳', value: 'Shenzhen' },
   ];
-  const [selectedVal, setSelectedVal] = useState<string>();
+  const [selectedVal, setSelectedVal] = useState<string>('1');
 
   return (
-    <div>
-      <TagSelector
-        type="radio"
-        tags={options}
-        value={selectedVal}
-        handleOnChange={(val) => setSelectedVal(val)}
-      ></TagSelector>
-      <p>{selectedVal}</p>
-    </div>
+    <TagSelector
+      type="radio"
+      tags={options}
+      value={selectedVal}
+      onChange={(val) => {
+        console.log(val);
+        setSelectedVal(val as string);
+      }}
+    ></TagSelector>
   );
 }
 

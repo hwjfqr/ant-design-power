@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { Tag } from 'antd';
+import { UpOutlined, DownOutlined } from '@ant-design/icons';
 import { CheckableTagProps } from 'antd/es/tag';
 import 'antd/es/tag/style';
-import { UpOutlined, DownOutlined } from '@ant-design/icons';
 import styles from './index.less';
 
 const { CheckableTag } = Tag;
 
-interface TagSelectorProps {
+type ValueType = (string | number)[] | string | number | undefined;
+interface TagSelectorProps
+  extends Omit<CheckableTagProps, 'checked' | 'onChange'> {
   /**
    * 标签数组
    */
@@ -15,24 +17,27 @@ interface TagSelectorProps {
   /**
    * 当前值
    */
-  value?: string[] | string;
+  value?: ValueType;
   /**
    * 变化回调
    */
-  handleOnChange?: (val?: string[] | string) => void;
+  onChange(val?: string): void;
+  onChange(val?: number): void;
+  onChange(val?: (string | number)[]): void;
+  onChange(val: ValueType): void;
   /**
    * 标签选择器类型，支持单选或多选。
    */
   type?: 'radio' | 'checkbox';
   /**
-   * 指定当选项超过多少个时，提供展开按钮并隐藏剩余选项。
+   * 指定当选项超过多少个时，提供展开按钮并隐藏剩余选项。指定为 false ，表示不隐藏选项。
    */
-  displayMaxOptionLength?: number;
+  displayMaxOptionLength?: number | boolean;
 }
 export default function TagSelector({
   tags = [],
   value = [],
-  handleOnChange,
+  onChange,
   type = 'checkbox',
   displayMaxOptionLength = 20,
   ...rest
@@ -41,8 +46,8 @@ export default function TagSelector({
 
   let tTags = [...tags];
 
-  const handleChange = (tag: string, checked: boolean) => {
-    let nextValue: string | string[] | undefined = [];
+  const handleChange = (tag: string | number, checked: boolean) => {
+    let nextValue: ValueType = [];
     if (type === 'radio') {
       nextValue = checked ? tag : undefined;
     } else if (Array.isArray(value)) {
@@ -50,31 +55,44 @@ export default function TagSelector({
         ? [...value, tag]
         : value.filter((item) => item !== tag);
     }
-    handleOnChange && handleOnChange(nextValue as string);
+    onChange && onChange(nextValue);
   };
 
   return (
-    <div className={styles['tag-selector']}>
-      {tTags
-        .filter((_, idx) => (expand ? true : idx + 1 <= displayMaxOptionLength))
-        .map(({ label, value: tag }) => (
-          <CheckableTag
-            {...rest}
-            key={tag}
-            checked={type === 'radio' ? tag === value : value.includes(tag)}
-            onChange={(checked) => {
-              handleChange(tag, checked);
-            }}
-          >
-            {label}
-          </CheckableTag>
-        ))}
-      {tTags.length > displayMaxOptionLength ? (
+    <div style={{ position: 'relative', display: 'flex' }}>
+      <div className={styles['tag-selector']}>
+        {tTags
+          .filter(
+            (_, idx) =>
+              expand ||
+              (displayMaxOptionLength && idx + 1 <= displayMaxOptionLength) ||
+              !displayMaxOptionLength,
+          )
+          .map(({ label, value: tag }) => (
+            <CheckableTag
+              {...rest}
+              key={tag}
+              checked={
+                type === 'radio'
+                  ? tag === value
+                  : (value as (string | number)[]).includes(tag)
+              }
+              onChange={(checked) => {
+                handleChange(tag, checked);
+              }}
+            >
+              {label}
+            </CheckableTag>
+          ))}
+        {displayMaxOptionLength &&
+        tTags.length > displayMaxOptionLength &&
+        expand === false ? (
+          <span>......</span>
+        ) : null}
+      </div>
+      {displayMaxOptionLength && tTags.length > displayMaxOptionLength ? (
         <a
-          style={{
-            whiteSpace: 'nowrap',
-            paddingLeft: 8,
-          }}
+          style={{ flexBasis: 50, flexShrink: 0, paddingTop: 4 }}
           onClick={() => {
             setExpand(!expand);
           }}
