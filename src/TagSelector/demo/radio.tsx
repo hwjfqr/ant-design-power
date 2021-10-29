@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { TagSelector } from 'ant-design-power';
 
-function CountdownButtonDemo() {
+function TagSelectorDemo() {
   const options = [
     { label: '北京', value: 'Beijing' },
     { label: '上海', value: 'Shanghai' },
     { label: '广州', value: 'Guangzhou' },
     { label: '深圳', value: 'Shenzhen' },
   ];
-  const [selectedVal, setSelectedVal] = useState<string>('1');
+  const [selectedVal, setSelectedVal] = useState<string>('Beijing');
 
   return (
     <TagSelector
@@ -17,10 +17,10 @@ function CountdownButtonDemo() {
       value={selectedVal}
       onChange={(val) => {
         console.log(val);
-        setSelectedVal(val as string);
+        setSelectedVal(val);
       }}
     ></TagSelector>
   );
 }
 
-export default CountdownButtonDemo;
+export default TagSelectorDemo;

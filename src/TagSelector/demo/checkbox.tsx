@@ -16,7 +16,7 @@ function CountdownButtonDemo() {
       displayMaxOptionLength={20}
       onChange={(val) => {
         console.log(val);
-        setSelectedVal(val as string[]);
+        setSelectedVal(val);
       }}
     ></TagSelector>
   );

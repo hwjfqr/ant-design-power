@@ -1,79 +1,76 @@
-import React, { useState, useEffect, ReactNode } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DatePicker, Tag } from 'antd';
-import { RangePickerProps } from 'antd/es/date-picker';
-import moment from 'moment';
+import { RangePickerProps } from 'antd/es/date-picker/index';
 
 const { CheckableTag } = Tag;
 const { RangePicker } = DatePicker;
 
-/* 
-  参数说明：
-    config用于配置快捷时间关键字以及对应的值;
-      {
-        近1月: [moment().subtract(1, 'months'), moment()],
-        近6月: [moment().subtract(6, 'months'), moment()],
-        近1年: [moment().subtract(1, 'years'), moment()],
-      }
-    initialKey表示初始值，值必须是快捷时间关键字（这意味着默认的时间必须是config中的其中一个）;
-    onChange
-*/
-
 type QuickRangePickerProps = {
-  presetTimeRange: { [prop: string]: [any, any] };
-  defaultPresetTime: string;
-  RangePickerComponent: React.FC<RangePickerProps>;
-  // onChange;
-  children: ReactNode;
+  /**
+   * 预设时间范围
+   *  { [ prop:string ]:[ Moment|Dayjs, Moment|Dayjs ] }
+   */
+  presetTimeRange?: { [prop: string]: [any, any] };
+
+  /**
+   * 默认时间范围
+   */
+  defaultPresetTime?: string;
 };
 function QuickRangePicker({
-  presetTimeRange = {},
+  presetTimeRange,
   defaultPresetTime,
-  // onChange,
-  RangePickerComponent,
-  renderRangePickerComponent:()=>{},
-  children,
-}: QuickRangePickerProps) {
-  const [curTag, setCutTag] = useState<string | undefined>(defaultPresetTime);
-  const [date, setDate] = useState(
-    curTag ? presetTimeRange[curTag] : undefined,
-  );
+  ...rest
+}: QuickRangePickerProps & RangePickerProps) {
+  const [tag, setTag] = useState(defaultPresetTime);
 
   useEffect(() => {
-    setDate(curTag ? presetTimeRange[curTag] : undefined);
-  }, [curTag]);
+    if (defaultPresetTime && presetTimeRange) {
+      rest.onChange &&
+        rest.onChange(
+          presetTimeRange[defaultPresetTime],
+          presetTimeRange[defaultPresetTime].map((item) => item.toString()) as [
+            string,
+            string,
+          ],
+        );
+    }
+  }, []);
 
   return (
-    <div>
-      {Object.keys(presetTimeRange).map((k) => (
-        <CheckableTag
-          key={k}
-          checked={k === curTag}
-          onChange={() => {
-            setCutTag(k);
-            onChange &&
-              onChange(
-                presetTimeRange[k],
-                presetTimeRange[k].map((dateMoment) =>
-                  dateMoment.format('YYYY-MM-DD'),
-                ) as [string, string],
-              );
-          }}
-        >
-          {k}
-        </CheckableTag>
-      ))}
-      {() => {
-        children;
-      }}
-      <RangePickerComponent
-        value={date}
-        onChange={(date, dateString) => {
-          setDate(date as any);
-          setCutTag(undefined);
-          onChange && onChange(date, dateString);
+    <>
+      {Object.keys(presetTimeRange || {}).map((k) => {
+        return (
+          <CheckableTag
+            key={k}
+            checked={k === tag}
+            onChange={() => {
+              setTag(k);
+              if (presetTimeRange) {
+                rest.onChange &&
+                  rest.onChange(
+                    presetTimeRange[k],
+                    presetTimeRange[k].map((item) => item.toString()) as [
+                      string,
+                      string,
+                    ],
+                  );
+              }
+            }}
+          >
+            {k}
+          </CheckableTag>
+        );
+      })}
+
+      <RangePicker
+        {...rest}
+        onChange={(...args) => {
+          rest.onChange && rest.onChange(...args);
+          setTag(undefined);
         }}
-      />
-    </div>
+      ></RangePicker>
+    </>
   );
 }
 

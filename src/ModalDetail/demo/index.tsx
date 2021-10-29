@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { Button } from 'antd';
 import { ModalDetail } from 'ant-design-power';
 
 function ModalDetailDemo() {
   const [listItemDetailArgs, setListItemDetailArgs] = useState<{
     visible: boolean;
-    data: { label: string; value?: string }[];
+    data: { label: string; value?: string | ReactNode }[];
   }>({
     visible: false,
     data: [],

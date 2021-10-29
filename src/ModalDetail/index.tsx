@@ -1,10 +1,7 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { Modal, Descriptions } from 'antd';
 import { ModalProps } from 'antd/es/modal';
 import { DescriptionsProps } from 'antd/es/descriptions';
-import 'antd/es/modal/style';
-import 'antd/es/descriptions/style';
-import React from 'react';
 
 interface DetailModalType {
   /**
@@ -22,7 +19,7 @@ interface DetailModalType {
   /**
    * 需要展示的详情数据
    */
-  data?: { label: string; value?: string }[];
+  data?: { label: string; value?: ReactNode | string }[];
   /**
    * 用于指定 Modal 组件的其他 API
    */
@@ -66,7 +63,7 @@ function ModalDetail({
           ))}
         </Descriptions>
       ) : null}
-      {children ? children : null}
+      {children || null}
     </Modal>
   );
 }

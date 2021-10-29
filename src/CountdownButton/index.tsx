@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from 'antd';
 import { ButtonProps } from 'antd/es/button';
-import 'antd/es/button/style';
 
 const MAX_SECOND_NUM = 60;
 

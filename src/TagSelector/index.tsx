@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { Tag } from 'antd';
 import { UpOutlined, DownOutlined } from '@ant-design/icons';
 import { CheckableTagProps } from 'antd/es/tag';
-import 'antd/es/tag/style';
 import styles from './index.less';
 
 const { CheckableTag } = Tag;
 
-type ValueType = (string | number)[] | string | number | undefined;
-interface TagSelectorProps
+// type ValueType = (string | number)[] | string | number | undefined;
+
+interface TagSelectorProps<T>
   extends Omit<CheckableTagProps, 'checked' | 'onChange'> {
   /**
    * 标签数组
@@ -17,14 +17,11 @@ interface TagSelectorProps
   /**
    * 当前值
    */
-  value?: ValueType;
+  value: T;
   /**
    * 变化回调
    */
-  onChange(val?: string): void;
-  onChange(val?: number): void;
-  onChange(val?: (string | number)[]): void;
-  onChange(val: ValueType): void;
+  onChange(val: T): void;
   /**
    * 标签选择器类型，支持单选或多选。
    */
@@ -34,20 +31,22 @@ interface TagSelectorProps
    */
   displayMaxOptionLength?: number | boolean;
 }
-export default function TagSelector({
+export default function TagSelector<
+  T extends string | number | (string | number)[],
+>({
   tags = [],
-  value = [],
+  value,
   onChange,
   type = 'checkbox',
   displayMaxOptionLength = 20,
   ...rest
-}: TagSelectorProps) {
+}: TagSelectorProps<T>) {
   const [expand, setExpand] = useState(false);
 
   let tTags = [...tags];
 
   const handleChange = (tag: string | number, checked: boolean) => {
-    let nextValue: ValueType = [];
+    let nextValue: any;
     if (type === 'radio') {
       nextValue = checked ? tag : undefined;
     } else if (Array.isArray(value)) {

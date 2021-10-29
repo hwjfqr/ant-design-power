@@ -9,7 +9,7 @@ export default defineConfig({
   outputPath: 'docs-dist',
   // more config: https://d.umijs.org/config
   navs: [
-    null,
+    null, // null 值代表保留约定式生成的导航，只做增量配置
     {
       title: 'GitHub',
       path: 'https://github.com/umijs/dumi-template',
@@ -26,4 +26,19 @@ export default defineConfig({
       skipPropsWithoutDoc: false,
     },
   },
+  // locales: [
+  //   // ['en-US', 'English'],
+  //   ['zh-CN', '中文'],
+  // ],
+  locale: {},
+  extraBabelPlugins: [
+    [
+      'babel-plugin-import',
+      {
+        libraryName: 'antd',
+        libraryDirectory: 'es',
+        style: true,
+      },
+    ],
+  ],
 });
