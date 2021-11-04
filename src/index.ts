@@ -4,6 +4,7 @@ import ModalForm from './ModalForm';
 import ModalDetail from './ModalDetail';
 import QuickRangePicker from './QuickRangePicker';
 import EditableTag from './EditableTag';
+import EditableTree from './EditableTree';
 
 export {
   CountdownButton,
@@ -12,6 +13,7 @@ export {
   ModalDetail,
   QuickRangePicker,
   EditableTag,
+  EditableTree,
 };
 export default {
   CountdownButton,
@@ -20,4 +22,5 @@ export default {
   ModalDetail,
   QuickRangePicker,
   EditableTag,
+  EditableTree,
 };
