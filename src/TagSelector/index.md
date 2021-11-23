@@ -19,6 +19,10 @@ group:
 
 <code src="./demo/checkbox.tsx" />
 
+## 在 Form 中使用
+
+<code src="./demo/form.tsx" />
+
 <API></API>
 
 除以上 API 外，标签选择器还支持 CheckableTag 组件（Ant Design）的所有 API 。

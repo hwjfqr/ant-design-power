@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TagSelector } from 'ant-design-power';
 
-function CountdownButtonDemo() {
+function TagSelectorCheckboxDemo() {
   const options: { label: string; value: string }[] = [];
   Array.from(new Array(100)).forEach((_, idx) => {
     options.push({ label: `选项${idx + 1}`, value: `${idx + 1}` });
@@ -22,4 +22,4 @@ function CountdownButtonDemo() {
   );
 }
 
-export default CountdownButtonDemo;
+export default TagSelectorCheckboxDemo;

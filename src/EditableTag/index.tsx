@@ -6,8 +6,8 @@ import { InputProps } from 'antd/es/input';
 import styles from './index.less';
 
 type EditableTagProps = {
-  value: string[];
-  onChange: (tags: string[]) => void;
+  value?: string[];
+  onChange?: (tags: string[]) => void;
   addTxt?: string;
   tagProps?: TagProps;
   inputProps?: InputProps;
@@ -18,19 +18,19 @@ function EditableTag({ value, onChange, addTxt = '添加' }: EditableTagProps) {
 
   const handleInputConfirm = () => {
     const { value: inputValue } = inputArgs;
-    let tags = [...value];
+    let tags = [...(value || [])];
     if (inputValue && tags.indexOf(inputValue) === -1) {
       tags = [...tags, inputValue];
     }
-    onChange(tags);
+    onChange && onChange(tags);
     setInputArgs({ visible: false, value: '' });
   };
 
   const handleEditInputConfirm = () => {
-    const tags = [...value];
+    const tags = [...(value || [])];
     const { index, value: eValue } = editInputArgs;
     tags[index] = eValue;
-    onChange(tags);
+    onChange && onChange(tags);
     setEditInputArgs({ index: -1, value: '' });
   };
 
@@ -47,7 +47,7 @@ function EditableTag({ value, onChange, addTxt = '添加' }: EditableTagProps) {
     }
   }, [inputArgs]);
 
-  const tags = [...value];
+  const tags = [...(value || [])];
   return (
     <>
       {tags.map((tag, index) => {
@@ -78,7 +78,7 @@ function EditableTag({ value, onChange, addTxt = '添加' }: EditableTagProps) {
             closable
             onClose={() => {
               const newTags = tags.filter((item) => item !== tag);
-              onChange(newTags);
+              onChange && onChange(newTags);
             }}
           >
             <span

@@ -15,4 +15,8 @@ group:
 
 <code src="./demo/index.tsx" />
 
+## 在 Form 中使用
+
+<code src="./demo/form.tsx" />
+
 <API></API>

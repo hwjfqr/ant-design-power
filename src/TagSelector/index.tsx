@@ -17,11 +17,11 @@ interface TagSelectorProps<T>
   /**
    * 当前值
    */
-  value: T;
+  value?: T;
   /**
    * 变化回调
    */
-  onChange(val: T): void;
+  onChange?(val: T): void;
   /**
    * 标签选择器类型，支持单选或多选。
    */
@@ -49,10 +49,10 @@ export default function TagSelector<
     let nextValue: any;
     if (type === 'radio') {
       nextValue = checked ? tag : undefined;
-    } else if (Array.isArray(value)) {
+    } else if (type === 'checkbox') {
       nextValue = checked
-        ? [...value, tag]
-        : value.filter((item) => item !== tag);
+        ? [...((value || []) as (string | number)[]), tag]
+        : ((value || []) as (string | number)[]).filter((item) => item !== tag);
     }
     onChange && onChange(nextValue);
   };
@@ -74,7 +74,7 @@ export default function TagSelector<
               checked={
                 type === 'radio'
                   ? tag === value
-                  : (value as (string | number)[]).includes(tag)
+                  : ((value as (string | number)[]) || []).includes(tag)
               }
               onChange={(checked) => {
                 handleChange(tag, checked);
@@ -91,7 +91,14 @@ export default function TagSelector<
       </div>
       {displayMaxOptionLength && tTags.length > displayMaxOptionLength ? (
         <a
-          style={{ flexBasis: 50, flexShrink: 0, paddingTop: 4 }}
+          style={{
+            // flexBasis: 50,
+            // flexShrink: 0,
+            // paddingTop: 4,
+            marginLeft: 8,
+            marginTop: 4,
+            minWidth: 50,
+          }}
           onClick={() => {
             setExpand(!expand);
           }}
