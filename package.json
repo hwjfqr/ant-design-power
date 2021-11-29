@@ -1,6 +1,6 @@
 {
   "name": "ant-design-power",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "scripts": {
     "start": "dumi dev",
     "docs:build": "dumi build",
@@ -18,8 +18,14 @@
   "bugs": {
     "url": "https://github.com/hwjfqr/ant-design-power/issues"
   },
-  "title":"ant-design-power",
-  "keywords": ["ant-design","antd","component","react","react-component"],
+  "title": "ant-design-power",
+  "keywords": [
+    "ant-design",
+    "antd",
+    "component",
+    "react",
+    "react-component"
+  ],
   "lint-staged": {
     "*.{js,jsx,less,md,json}": [
       "prettier --write"
