@@ -1,27 +1,11 @@
 # ant-design-power
+基于 ant-design 封装的业务组件库。
 
-## Getting Started
 
-Install dependencies,
-
-```bash
-$ npm i
+### 安装
+```
+$ npm i ant-design-power
 ```
 
-Start the dev server,
-
-```bash
-$ npm start
-```
-
-Build documentation,
-
-```bash
-$ npm run docs:build
-```
-
-Build library via `father-build`,
-
-```bash
-$ npm run build
-```
+### 组件使用文档
+https://hwjfqr.github.io/ant-design-power/docs-dist/
