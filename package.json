@@ -1,20 +1,25 @@
 {
   "name": "ant-design-power",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "scripts": {
     "start": "dumi dev",
     "docs:build": "dumi build",
     "docs:deploy": "gh-pages -d docs-dist",
     "build": "father-build",
     "deploy": "npm run docs:build && npm run docs:deploy",
-    "release": "npm run build && npm publish",
+    "release": "npm run build  && npm version patch && npm publish",
     "prettier": "prettier --write \"**/*.{js,jsx,tsx,ts,less,md,json}\"",
     "test": "umi-test",
     "test:coverage": "umi-test --coverage"
   },
   "main": "lib/index.js",
   "module": "es/index.js",
-  "typings": "dist/index.d.ts",
+  "typings": "lib/index.d.ts",
+  "bugs": {
+    "url": "https://github.com/hwjfqr/ant-design-power/issues"
+  },
+  "title":"ant-design-power",
+  "keywords": ["ant-design","antd","component","react","react-component"],
   "lint-staged": {
     "*.{js,jsx,less,md,json}": [
       "prettier --write"
@@ -27,6 +32,7 @@
     "es",
     "lib"
   ],
+  "homepage": "https://hwjfqr.github.io/ant-design-power/docs-dist/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hwjfqr/ant-design-power"
