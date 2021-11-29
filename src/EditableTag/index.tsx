@@ -3,7 +3,7 @@ import { Tag, Input, Tooltip } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { TagProps } from 'antd/es/tag';
 import { InputProps } from 'antd/es/input';
-import styles from './index.less';
+import styles from './index.module.less';
 
 type EditableTagProps = {
   value?: string[];

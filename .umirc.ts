@@ -44,4 +44,5 @@ export default defineConfig({
   ],
   base: '/ant-design-power/docs-dist/',
   publicPath: '/ant-design-power/docs-dist/',
+  // cssModulesTypescriptLoader: {},
 });

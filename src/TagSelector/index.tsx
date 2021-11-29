@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Tag } from 'antd';
 import { UpOutlined, DownOutlined } from '@ant-design/icons';
 import { CheckableTagProps } from 'antd/es/tag';
-import styles from './index.less';
+import styles from './index.module.less';
 
 const { CheckableTag } = Tag;
 
@@ -69,6 +69,7 @@ export default function TagSelector<
           )
           .map(({ label, value: tag }) => (
             <CheckableTag
+              // style={{ fontSize: 14 }}
               {...rest}
               key={tag}
               checked={
