@@ -6,6 +6,12 @@ import QuickRangePicker from './QuickRangePicker';
 import EditableTag from './EditableTag';
 import EditableTree from './EditableTree';
 
+/* 
+  解决编译出错问题的参考：
+    https://github.com/umijs/father/issues/227
+    https://stackoverflow.com/questions/45468683/error-at-node-modules-types-react-dom-subsequent-variable-declarations-mus
+*/
+
 export {
   CountdownButton,
   TagSelector,

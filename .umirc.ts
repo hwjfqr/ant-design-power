@@ -31,6 +31,7 @@ export default defineConfig({
   //   ['zh-CN', '中文'],
   // ],
   locale: {},
+  // 为组件文档项目按需引入 antd ，在 demo 和调试组件中使用。
   extraBabelPlugins: [
     [
       'babel-plugin-import',

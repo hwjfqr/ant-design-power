@@ -14,7 +14,9 @@
       "@@/*": ["src/.umi/*"],
       "ant-design-power": ["src/index.ts"]
     },
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "typeRoots": ["./typings", "node_modules/@types"]
   },
   "exclude": [
     "node_modules",
