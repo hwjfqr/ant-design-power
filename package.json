@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "ant-design-power",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "scripts": {
     "start": "dumi dev",
     "docs:build": "dumi build",
@@ -24,7 +24,10 @@
       "prettier --parser=typescript --write"
     ]
   },
-  "files": ["es","lib"],
+  "files": [
+    "es",
+    "lib"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hwjfqr/ant-design-power"
