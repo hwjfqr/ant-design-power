@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Tag } from 'antd';
 import { UpOutlined, DownOutlined } from '@ant-design/icons';
 import { CheckableTagProps } from 'antd/es/tag';
-import styles from './index.module.less';
+import './index.less';
 
 const { CheckableTag } = Tag;
 
@@ -59,7 +59,7 @@ export default function TagSelector<
 
   return (
     <div style={{ position: 'relative', display: 'flex' }}>
-      <div className={styles['tag-selector']}>
+      <div className="antd-power-tag-selector">
         {tTags
           .filter(
             (_, idx) =>

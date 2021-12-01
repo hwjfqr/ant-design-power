@@ -3,7 +3,7 @@ import { Tag, Input, Tooltip } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { TagProps } from 'antd/es/tag';
 import { InputProps } from 'antd/es/input';
-import styles from './index.module.less';
+import styles from './index.less';
 
 type EditableTagProps = {
   value?: string[];
@@ -57,7 +57,7 @@ function EditableTag({ value, onChange, addTxt = '添加' }: EditableTagProps) {
               ref={editInputRef}
               key={tag}
               size="small"
-              className={styles['tag-input']}
+              className="antd-power-tag-input"
               value={editInputArgs.value}
               onChange={({ target: { value } }) =>
                 setEditInputArgs((data) => ({
@@ -73,7 +73,7 @@ function EditableTag({ value, onChange, addTxt = '添加' }: EditableTagProps) {
         const isLongTag = tag.length > 20;
         const tagElem = (
           <Tag
-            className={styles['edit-tag']}
+            className="antd-power-edit-tag"
             key={tag}
             closable
             onClose={() => {
@@ -107,7 +107,7 @@ function EditableTag({ value, onChange, addTxt = '添加' }: EditableTagProps) {
           ref={inputRef}
           type="text"
           size="small"
-          className={styles['tag-input']}
+          className="antd-power-tag-input"
           value={inputArgs.value}
           onChange={({ target: { value } }) => {
             setInputArgs((data) => ({
@@ -121,7 +121,7 @@ function EditableTag({ value, onChange, addTxt = '添加' }: EditableTagProps) {
       )}
       {!inputArgs.visible && (
         <Tag
-          className={styles['site-tag-plus']}
+          className="antd-power-site-tag-plus"
           onClick={() => {
             setInputArgs((data) => ({
               ...data,
