@@ -23,11 +23,11 @@ interface EditableTreeProps extends TreeProps {
    */
   renderRightClickMenuItem?: (menu: ReactNode, nodeInfo: DataNode) => ReactNode;
   /**
-   * 右键下拉按钮的 Props
+   * 用于指定 Dropdown 组件的其他 API
    */
   dropdownProps?: DropDownProps;
   /**
-   * 右键下拉菜单的 Props
+   * 用于指定 Menu 组件的其他 API
    */
   menuProps?: MenuProps;
 }

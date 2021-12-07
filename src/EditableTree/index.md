@@ -19,3 +19,5 @@ group:
 <code src="./demo/custom.tsx" />
 
 <API></API>
+
+除以上 API 外，可编辑树还支持 Tree 组件（Ant Design）的所有 API 。

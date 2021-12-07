@@ -6,10 +6,25 @@ import { InputProps } from 'antd/es/input';
 import './index.less';
 
 type EditableTagProps = {
+  /**
+   * 当前值
+   */
   value?: string[];
+  /**
+   * 变化回调
+   */
   onChange?: (tags: string[]) => void;
+  /**
+   * 自定义添加文本
+   */
   addTxt?: string;
+  /**
+   * 用于指定 Tag 组件的其他 API
+   */
   tagProps?: TagProps;
+  /**
+   * 用于指定 Input 组件的其他 API
+   */
   inputProps?: InputProps;
 };
 function EditableTag({ value, onChange, addTxt = '添加' }: EditableTagProps) {
