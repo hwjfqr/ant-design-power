@@ -16,3 +16,5 @@ group:
 <code src="./demo/index.tsx" />
 
 <API></API>
+
+除以上 API 外，快捷时间范围选择器还支持 RangePicker 组件（Ant Design）的所有 API 。

@@ -11,7 +11,7 @@ import { MenuProps } from 'antd/es/menu';
 
 interface EditableTreeProps extends TreeProps {
   /**
-   * 右键菜单项对应的方法
+   * 右键菜单项对应的回调
    */
   treeEditingMethod?: {
     addItem?: (nodeInfo: DataNode) => void;

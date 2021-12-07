@@ -18,6 +18,9 @@ group:
 ## 自定义右键菜单
 <code src="./demo/custom.tsx" />
 
+## 配合 ModalForm 使用
+<code src="./demo/modal.tsx" />
+
 <API></API>
 
 除以上 API 外，可编辑树还支持 Tree 组件（Ant Design）的所有 API 。
