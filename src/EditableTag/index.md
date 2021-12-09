@@ -13,10 +13,10 @@ group:
  
 ## 基础使用
 
-<code src="./demo/index.tsx" />
+<code src="./demos/index.tsx" />
 
 ## 在 Form 中使用
 
-<code src="./demo/form.tsx" />
+<code src="./demos/form.tsx" />
 
 <API></API>

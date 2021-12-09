@@ -13,13 +13,13 @@ group:
  
 ## 基础使用
 
-<code src="./demo/index.tsx" />
+<code src="./demos/index.tsx" />
 
 ## 自定义右键菜单
-<code src="./demo/custom.tsx" />
+<code src="./demos/custom.tsx" />
 
 ## 配合 ModalForm 使用
-<code src="./demo/modal.tsx" />
+<code src="./demos/modal.tsx" />
 
 <API></API>
 

@@ -13,15 +13,15 @@ group:
 
 ## 单选模式
 
-<code src="./demo/radio.tsx" />
+<code src="./demos/radio.tsx" />
 
 ## 多选模式
 
-<code src="./demo/checkbox.tsx" />
+<code src="./demos/checkbox.tsx" />
 
 ## 在 Form 中使用
 
-<code src="./demo/form.tsx" />
+<code src="./demos/form.tsx" />
 
 <API></API>
 

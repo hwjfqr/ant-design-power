@@ -13,7 +13,7 @@ group:
  
 ## 基础使用
 
-<code src="./demo/index.tsx" />
+<code src="./demos/index.tsx" />
 
 <API></API>
 
