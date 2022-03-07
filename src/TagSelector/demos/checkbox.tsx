@@ -7,15 +7,15 @@ function TagSelectorCheckboxDemo() {
     options.push({ label: `选项${idx + 1}`, value: `${idx + 1}` });
   });
 
-  const [selectedVal, setSelectedVal] = useState<string[]>([]);
+  const [selectedVal, setSelectedVal] = useState<string[]>(['all']);
 
   return (
     <TagSelector
       tags={options}
       value={selectedVal}
       displayMaxOptionLength={20}
+      showAll
       onChange={(val) => {
-        console.log(val);
         setSelectedVal(val);
       }}
     ></TagSelector>

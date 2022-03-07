@@ -16,7 +16,6 @@ function TagSelectorDemo() {
       tags={options}
       value={selectedVal}
       onChange={(val) => {
-        console.log(val);
         setSelectedVal(val);
       }}
     ></TagSelector>

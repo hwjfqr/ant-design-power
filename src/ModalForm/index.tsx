@@ -5,8 +5,7 @@ import { FormProps, FormInstance } from 'antd/es/form';
 
 /* 
   T - { name:string; age:number }
-  实现一个工具类型，传入类型 T，结果类型为 { name:string } 或 { age:number } 。
-  keyof - 运算操作。
+  实现一个工具类型，传入类型 T，结果类型为 { name:string } 或 { age:number } 
 */
 // type SingleValueType<O, K extends keyof O> = K extends string
 //   ? {
@@ -39,7 +38,7 @@ export interface ModalFormType<T> {
   /**
    * 点击提交按钮时触发的回调，当回调返回值为 true 时，将触发 onClose 方法关闭 Modal。
    */
-  onSubmit: (values: T, isEdit: boolean) => Promise<boolean>;
+  onSubmit: (values: T) => Promise<boolean>;
   /**
    * 当表单值变化时触发的回调，用于实现表单值联动变化。
    */
@@ -63,7 +62,6 @@ function ModalForm<T extends { [prop: string]: unknown }>({
   title = '表单',
   visible = false,
   initialValue,
-  idKey = 'id',
   onClose,
   onSubmit,
   onValuesChange,
@@ -94,19 +92,13 @@ function ModalForm<T extends { [prop: string]: unknown }>({
       onOk={async () => {
         try {
           const values = await form.validateFields();
-          const data = { ...values };
-          if (initialValue && initialValue[idKey])
-            data[idKey] = initialValue[idKey];
-          const b = await onSubmit(
-            data,
-            !!(initialValue && !!initialValue[idKey]),
-          );
+          const b = await onSubmit(values);
           if (b) {
             onClose();
             setTimeout(() => form.resetFields(), 300);
           }
         } catch (err) {
-          console.log('验证失败', err);
+          console.error('验证失败', err);
         }
       }}
       {...modalProps}

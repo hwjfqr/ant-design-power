@@ -11,7 +11,6 @@ function TagSelectorFormDemo() {
   return (
     <Form
       onFinish={(values) => {
-        console.log(values);
         message.info(JSON.stringify(values));
       }}
     >

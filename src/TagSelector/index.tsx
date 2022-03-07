@@ -6,14 +6,13 @@ import './index.less';
 
 const { CheckableTag } = Tag;
 
-// type ValueType = (string | number)[] | string | number | undefined;
-
+type ValueType = any;
 interface TagSelectorProps<T>
   extends Omit<CheckableTagProps, 'checked' | 'onChange'> {
   /**
    * 标签数组
    */
-  tags: { label: string; value: string | number }[];
+  tags: { label: string; value: ValueType }[];
   /**
    * 当前值
    */
@@ -30,29 +29,49 @@ interface TagSelectorProps<T>
    * 指定当选项超过多少个时，提供展开按钮并隐藏剩余选项。指定为 false ，表示不隐藏选项。
    */
   displayMaxOptionLength?: number | boolean;
+  /**
+   * 指定是否添加“全部”选项
+   */
+  showAll?: boolean;
 }
-export default function TagSelector<
-  T extends string | number | (string | number)[],
->({
+export default function TagSelector<T extends ValueType | ValueType[]>({
   tags = [],
   value,
   onChange,
   type = 'checkbox',
   displayMaxOptionLength = 20,
+  showAll = false,
   ...rest
 }: TagSelectorProps<T>) {
   const [expand, setExpand] = useState(false);
 
   let tTags = [...tags];
+  if (showAll) {
+    tTags = [{ label: '全部', value: 'all' }, ...tTags];
+  }
 
-  const handleChange = (tag: string | number, checked: boolean) => {
+  const handleChange = (tag: ValueType, checked: boolean) => {
     let nextValue: any;
     if (type === 'radio') {
-      nextValue = checked ? tag : undefined;
+      nextValue = checked ? tag : showAll ? 'all' : undefined;
     } else if (type === 'checkbox') {
-      nextValue = checked
-        ? [...((value || []) as (string | number)[]), tag]
-        : ((value || []) as (string | number)[]).filter((item) => item !== tag);
+      const val = [...((value as ValueType[]) || [])];
+      const filteredVal = val.filter((item) => item !== tag);
+      if (showAll) {
+        if (tag === 'all') {
+          nextValue = ['all'];
+        } else if (checked) {
+          nextValue = [...val.filter((item) => item !== 'all'), tag];
+        } else {
+          nextValue = filteredVal.length ? filteredVal : ['all'];
+        }
+      } else {
+        if (checked) {
+          nextValue = [...val, tag];
+        } else {
+          nextValue = filteredVal.length ? filteredVal : undefined;
+        }
+      }
     }
     onChange && onChange(nextValue);
   };
@@ -69,13 +88,12 @@ export default function TagSelector<
           )
           .map(({ label, value: tag }) => (
             <CheckableTag
-              // style={{ fontSize: 14 }}
               {...rest}
               key={tag}
               checked={
                 type === 'radio'
                   ? tag === value
-                  : ((value as (string | number)[]) || []).includes(tag)
+                  : ((value as ValueType[]) || []).includes(tag)
               }
               onChange={(checked) => {
                 handleChange(tag, checked);
@@ -93,9 +111,6 @@ export default function TagSelector<
       {displayMaxOptionLength && tTags.length > displayMaxOptionLength ? (
         <a
           style={{
-            // flexBasis: 50,
-            // flexShrink: 0,
-            // paddingTop: 4,
             marginLeft: 8,
             marginTop: 4,
             minWidth: 50,
