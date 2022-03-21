@@ -33,6 +33,14 @@ interface TagSelectorProps<T>
    * 指定是否添加“全部”选项
    */
   showAll?: boolean;
+  /**
+   * 全部选项的文案
+   */
+  allText?: string;
+  /**
+   * 全部选项的值
+   */
+  allValue?: string;
 }
 export default function TagSelector<T extends ValueType | ValueType[]>({
   tags = [],
@@ -41,29 +49,31 @@ export default function TagSelector<T extends ValueType | ValueType[]>({
   type = 'checkbox',
   displayMaxOptionLength = 20,
   showAll = false,
+  allText = '全部',
+  allValue = 'all',
   ...rest
 }: TagSelectorProps<T>) {
   const [expand, setExpand] = useState(false);
 
   let tTags = [...tags];
   if (showAll) {
-    tTags = [{ label: '全部', value: 'all' }, ...tTags];
+    tTags = [{ label: allText, value: allValue }, ...tTags];
   }
 
   const handleChange = (tag: ValueType, checked: boolean) => {
     let nextValue: any;
     if (type === 'radio') {
-      nextValue = checked ? tag : showAll ? 'all' : undefined;
+      nextValue = checked ? tag : showAll ? allValue : undefined;
     } else if (type === 'checkbox') {
       const val = [...((value as ValueType[]) || [])];
       const filteredVal = val.filter((item) => item !== tag);
       if (showAll) {
-        if (tag === 'all') {
-          nextValue = ['all'];
+        if (tag === allValue) {
+          nextValue = [allValue];
         } else if (checked) {
-          nextValue = [...val.filter((item) => item !== 'all'), tag];
+          nextValue = [...val.filter((item) => item !== allValue), tag];
         } else {
-          nextValue = filteredVal.length ? filteredVal : ['all'];
+          nextValue = filteredVal.length ? filteredVal : [allValue];
         }
       } else {
         if (checked) {
