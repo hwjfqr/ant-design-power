@@ -38,7 +38,7 @@ export interface ModalFormType<T> {
   /**
    * 点击提交按钮时触发的回调，当回调返回值为 true 时，将触发 onClose 方法关闭 Modal。
    */
-  onSubmit: (values: T) => Promise<boolean>;
+  onSubmit: (values: T, isEdit: boolean) => Promise<boolean>;
   /**
    * 当表单值变化时触发的回调，用于实现表单值联动变化。
    */
@@ -63,6 +63,7 @@ function ModalForm<T extends { [prop: string]: unknown }>({
   visible = false,
   initialValue,
   onClose,
+  idKey = 'id',
   onSubmit,
   onValuesChange,
   modalProps,
@@ -88,11 +89,17 @@ function ModalForm<T extends { [prop: string]: unknown }>({
         setTimeout(() => {
           form.resetFields();
         }, 300);
-      }}
+      }} 
       onOk={async () => {
         try {
           const values = await form.validateFields();
-          const b = await onSubmit(values);
+          const data = { ...values };
+          if (initialValue && initialValue[idKey])
+            data[idKey] = initialValue[idKey];
+          const b = await onSubmit(
+            data,
+            !!(initialValue && !!initialValue[idKey]),
+          );
           if (b) {
             onClose();
             setTimeout(() => form.resetFields(), 300);

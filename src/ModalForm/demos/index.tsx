@@ -47,8 +47,8 @@ function ModalFormDemo() {
         onClose={() => {
           setDataFormArgs({ visible: false, data: {} });
         }}
-        onSubmit={async (values) => {
-          message.info(JSON.stringify(values));
+        onSubmit={async (values, isEdit) => {
+          message.info(`${JSON.stringify(values)} ${isEdit}`);
           return true;
         }}
         onValuesChange={(value, _, form) => {
