@@ -1,5 +1,5 @@
-# ant-design-power
-基于 ant-design 封装的业务组件库。
+# Ant Design Power
+基于 Ant Design 封装的业务组件库。
 
 
 ### 安装
