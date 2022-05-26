@@ -1,5 +1,5 @@
 # Ant Design Power
-基于 Ant Design 封装的业务组件库。
+基于 Ant Design，作为 Ant Design 补充性组件库，满足中后台等业务场景通用性组件需求。组件使用文档：https://hwjfqr.github.io/ant-design-power/docs-dist/#/
 
 
 ### 安装
