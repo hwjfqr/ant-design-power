@@ -10,9 +10,13 @@ import { DropDownProps } from 'antd/es/dropdown';
 import { MenuProps } from 'antd/es/menu';
 
 export type DataNodeType = DataNode & {
-  isNotEdit?: boolean;
   children?: DataNodeType[];
   [prop: string]: any;
+};
+type TreeEditingMethodType = {
+  addItem?: (nodeInfo: DataNodeType) => void;
+  editItem?: (nodeInfo: DataNodeType) => void;
+  deleteItem?: (nodeInfo: DataNodeType) => void;
 };
 interface EditableTreeProps extends TreeProps {
   /**
@@ -22,17 +26,14 @@ interface EditableTreeProps extends TreeProps {
   /**
    * 右键菜单项对应的回调
    */
-  treeEditingMethod?: {
-    addItem?: (nodeInfo: DataNodeType) => void;
-    editItem?: (nodeInfo: DataNodeType) => void;
-    deleteItem?: (nodeInfo: DataNodeType) => void;
-  };
+  treeEditingMethod?: TreeEditingMethodType;
   /**
    * 自定义右键菜单项
    */
   renderRightClickMenuItem?: (
-    menu: ReactNode,
+    menu: ReactNode[],
     nodeInfo: DataNodeType,
+    treeEditingMethod: TreeEditingMethodType,
   ) => ReactNode;
   /**
    * 用于指定 Dropdown 组件的其他 API
@@ -60,44 +61,36 @@ function EditableTree({
     nodeInfo,
     children,
   }: TreeRightClickMenuProps) => {
-    const menu = (
-      <>
-        {addItem ? (
-          <Menu.Item
-            icon={<PlusCircleOutlined />}
-            key="add"
-            onClick={() => {
-              addItem && addItem(nodeInfo);
-            }}
-          >
-            添加
-          </Menu.Item>
-        ) : null}
-        {editItem ? (
-          <Menu.Item
-            key="edit"
-            icon={<EditOutlined />}
-            onClick={async () => {
-              editItem(nodeInfo);
-            }}
-          >
-            修改
-          </Menu.Item>
-        ) : null}
-        {deleteItem ? (
-          <Menu.Item
-            key="delete"
-            icon={<MinusCircleOutlined />}
-            danger
-            onClick={async () => {
-              deleteItem(nodeInfo);
-            }}
-          >
-            删除
-          </Menu.Item>
-        ) : null}
-      </>
-    );
+    const menu = [
+      <Menu.Item
+        icon={<PlusCircleOutlined />}
+        key="add"
+        onClick={() => {
+          addItem && addItem(nodeInfo);
+        }}
+      >
+        添加
+      </Menu.Item>,
+      <Menu.Item
+        key="edit"
+        icon={<EditOutlined />}
+        onClick={() => {
+          editItem && editItem(nodeInfo);
+        }}
+      >
+        修改
+      </Menu.Item>,
+      <Menu.Item
+        key="delete"
+        icon={<MinusCircleOutlined />}
+        danger
+        onClick={() => {
+          deleteItem && deleteItem(nodeInfo);
+        }}
+      >
+        删除
+      </Menu.Item>,
+    ];
     return (
       <Dropdown
         overlay={
@@ -109,7 +102,7 @@ function EditableTree({
           >
             {!renderRightClickMenuItem
               ? menu
-              : renderRightClickMenuItem(menu, nodeInfo)}
+              : renderRightClickMenuItem(menu, nodeInfo, treeEditingMethod)}
           </Menu>
         }
         trigger={['contextMenu']}
@@ -121,12 +114,10 @@ function EditableTree({
   };
   const dataTransform: (data: DataNodeType[]) => DataNodeType[] = (data) => {
     return data.map((item) => {
-      const { title, children, isNotEdit } = item;
+      const { title, children } = item;
       return {
         ...item,
-        title: isNotEdit ? (
-          title
-        ) : (
+        title: (
           <TreeRightClickMenu nodeInfo={{ ...item }}>
             {title}
           </TreeRightClickMenu>

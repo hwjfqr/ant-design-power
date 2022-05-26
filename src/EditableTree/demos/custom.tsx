@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { message, Menu } from 'antd';
+import { MinusCircleOutlined } from '@ant-design/icons';
 import { EditableTree } from 'ant-design-power';
 
 const treeData = [
@@ -42,19 +43,34 @@ function EditableTreeDemo() {
             message.info(`delete：${JSON.stringify(nodeInfo)}`);
           },
         }}
-        renderRightClickMenuItem={(menu, nodeInfo) => (
-          <>
-            {menu}
-            <Menu.Item
-              key="custom"
-              onClick={() => {
-                message.info(`custom：${JSON.stringify(nodeInfo)}`);
-              }}
-            >
-              自定义菜单项
-            </Menu.Item>
-          </>
-        )}
+        renderRightClickMenuItem={(menu, nodeInfo, treeEditingMethod) => {
+          const [addNode, editNode] = menu;
+          return (
+            <>
+              {addNode}
+              {editNode}
+              <Menu.Item
+                key="delete"
+                danger
+                icon={<MinusCircleOutlined />}
+                onClick={() => {
+                  const { deleteItem } = treeEditingMethod;
+                  deleteItem && deleteItem(nodeInfo);
+                }}
+              >
+                移除
+              </Menu.Item>
+              <Menu.Item
+                key="custom"
+                onClick={() => {
+                  message.info(`custom：${JSON.stringify(nodeInfo)}`);
+                }}
+              >
+                自定义菜单项
+              </Menu.Item>
+            </>
+          );
+        }}
       ></EditableTree>
     </div>
   );

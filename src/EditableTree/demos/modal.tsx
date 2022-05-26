@@ -19,7 +19,6 @@ const data = [
           {
             title: 'leaf',
             key: '0-0-0-1',
-            isNotEdit: true,
           },
         ],
       },

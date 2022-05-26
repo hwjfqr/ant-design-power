@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { message } from 'antd';
 import { EditableTree } from 'ant-design-power';
 
