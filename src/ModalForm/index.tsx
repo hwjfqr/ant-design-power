@@ -89,7 +89,7 @@ function ModalForm<T extends { [prop: string]: unknown }>({
         setTimeout(() => {
           form.resetFields();
         }, 300);
-      }} 
+      }}
       onOk={async () => {
         try {
           const values = await form.validateFields();
@@ -98,7 +98,7 @@ function ModalForm<T extends { [prop: string]: unknown }>({
             data[idKey] = initialValue[idKey];
           const b = await onSubmit(
             data,
-            !!(initialValue && !!initialValue[idKey]),
+            !!(initialValue && initialValue[idKey]),
           );
           if (b) {
             onClose();

@@ -9,19 +9,31 @@ import { DataNode, TreeProps } from 'antd/es/tree';
 import { DropDownProps } from 'antd/es/dropdown';
 import { MenuProps } from 'antd/es/menu';
 
+export type DataNodeType = DataNode & {
+  isNotEdit?: boolean;
+  children?: DataNodeType[];
+  [prop: string]: any;
+};
 interface EditableTreeProps extends TreeProps {
+  /**
+   * 树数据
+   */
+  treeData: DataNodeType[];
   /**
    * 右键菜单项对应的回调
    */
   treeEditingMethod?: {
-    addItem?: (nodeInfo: DataNode) => void;
-    editItem?: (nodeInfo: DataNode) => void;
-    deleteItem?: (nodeInfo: DataNode) => void;
+    addItem?: (nodeInfo: DataNodeType) => void;
+    editItem?: (nodeInfo: DataNodeType) => void;
+    deleteItem?: (nodeInfo: DataNodeType) => void;
   };
   /**
    * 自定义右键菜单项
    */
-  renderRightClickMenuItem?: (menu: ReactNode, nodeInfo: DataNode) => ReactNode;
+  renderRightClickMenuItem?: (
+    menu: ReactNode,
+    nodeInfo: DataNodeType,
+  ) => ReactNode;
   /**
    * 用于指定 Dropdown 组件的其他 API
    */
@@ -41,7 +53,7 @@ function EditableTree({
 }: EditableTreeProps) {
   const { addItem, editItem, deleteItem } = treeEditingMethod;
   interface TreeRightClickMenuProps {
-    nodeInfo: DataNode;
+    nodeInfo: DataNodeType;
     children: ReactNode;
   }
   const TreeRightClickMenu = ({
@@ -107,12 +119,14 @@ function EditableTree({
       </Dropdown>
     );
   };
-  const dataTransform: (data: DataNode[]) => DataNode[] = (data) => {
+  const dataTransform: (data: DataNodeType[]) => DataNodeType[] = (data) => {
     return data.map((item) => {
-      const { title, children } = item;
+      const { title, children, isNotEdit } = item;
       return {
         ...item,
-        title: (
+        title: isNotEdit ? (
+          title
+        ) : (
           <TreeRightClickMenu nodeInfo={{ ...item }}>
             {title}
           </TreeRightClickMenu>
@@ -124,5 +138,49 @@ function EditableTree({
   const treeData = data ? dataTransform(data) : [];
   return <Tree treeData={treeData} {...rest}></Tree>;
 }
+
+function updateTreeNode(
+  treeData: DataNodeType[],
+  key: string | number,
+  callback: (node: DataNodeType) => DataNodeType,
+) {
+  const dfs = (node: DataNodeType[]): DataNodeType[] => {
+    return node.map((item: DataNodeType) => {
+      if (item.key === key) {
+        const d = callback(item);
+        return d;
+      }
+      return {
+        ...item,
+        children: (item.children || []).length ? dfs(item.children!) : null,
+      };
+    }) as DataNodeType[];
+  };
+  return dfs(treeData);
+}
+
+function deleteTreeNode(treeData: DataNodeType[], key: string | number) {
+  const dfs = (node: DataNodeType[]): DataNodeType[] => {
+    return node
+      .filter((item) => {
+        if (item.key === key) {
+          return false;
+        }
+        return true;
+      })
+      .map((item) => {
+        if ((item.children || []).length) {
+          return {
+            ...item,
+            children: dfs(item.children!),
+          };
+        }
+        return item;
+      }) as DataNodeType[];
+  };
+  return dfs(treeData);
+}
+EditableTree.updateTreeNode = updateTreeNode;
+EditableTree.deleteTreeNode = deleteTreeNode;
 
 export default EditableTree;
