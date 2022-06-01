@@ -5,6 +5,7 @@ import ModalDetail from './ModalDetail';
 import QuickRangePicker from './QuickRangePicker';
 import EditableTag from './EditableTag';
 import EditableTree from './EditableTree';
+import ProgressLoading from './ProgressLoading';
 
 /* 
   解决编译出错问题的参考：
@@ -20,6 +21,7 @@ export {
   QuickRangePicker,
   EditableTag,
   EditableTree,
+  ProgressLoading,
 };
 export default {
   CountdownButton,
@@ -29,4 +31,5 @@ export default {
   QuickRangePicker,
   EditableTag,
   EditableTree,
+  ProgressLoading,
 };
