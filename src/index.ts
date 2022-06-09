@@ -6,6 +6,7 @@ import QuickRangePicker from './QuickRangePicker';
 import EditableTag from './EditableTag';
 import EditableTree from './EditableTree';
 import ProgressLoading from './ProgressLoading';
+import TableList from './TableList';
 
 /* 
   解决编译出错问题的参考：
@@ -22,6 +23,7 @@ export {
   EditableTag,
   EditableTree,
   ProgressLoading,
+  TableList,
 };
 export default {
   CountdownButton,
@@ -32,4 +34,5 @@ export default {
   EditableTag,
   EditableTree,
   ProgressLoading,
+  TableList,
 };
