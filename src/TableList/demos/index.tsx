@@ -2,29 +2,15 @@ import React, { useState } from 'react';
 import { Button, Tag, Space } from 'antd';
 import { TableList } from 'ant-design-power';
 
-const dataSource = [
-  {
-    id: '1',
-    username: '用户1',
-    type: '普通用户',
-    status: 1,
-  },
-  {
-    id: '2',
-    username: '用户2',
-    type: '普通用户',
-    status: 0,
-  },
-  {
-    id: '3',
-    username: '用户3',
-    type: '管理员',
-    status: 1,
-  },
-];
+const dataSource = [...new Array(100)].map((_, index) => ({
+  id: index + 1,
+  username: `用户${index + 1}`,
+  type: '管理员',
+  status: 1,
+}));
 
 function TableListDemo() {
-  const [displayType, setDisplayType] = useState<'table' | 'list'>('list');
+  const [displayType, setDisplayType] = useState<'table' | 'list'>('table');
   return (
     <div>
       <Button
@@ -38,7 +24,7 @@ function TableListDemo() {
       >
         切换显示模式
       </Button>
-      <div style={{ paddingBottom: 10 }}>
+      <div style={{ paddingTop: 10 }}>
         <TableList
           type={displayType}
           fields={[
@@ -75,6 +61,7 @@ function TableListDemo() {
           commonProps={{
             rowKey: 'id',
             dataSource,
+            pagination: {},
           }}
         ></TableList>
       </div>

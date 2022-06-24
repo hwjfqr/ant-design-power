@@ -1,8 +1,10 @@
 import React, { Fragment, ReactNode } from 'react';
 import { Table, List, Space } from 'antd';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { Props as InfiniteScrollProps } from 'react-infinite-scroll-component/dist/index';
 import type { TableProps, ColumnType } from 'antd/es/table/index';
 import type { ListProps } from 'antd/es/list/index';
-import styles from './index.less';
+import './index.less';
 
 type FieldsType<T> = (ColumnType<T> & { [prop: string]: any })[];
 
@@ -53,46 +55,90 @@ interface TableListProps<T extends object> {
    * List 组件的其他 API
    */
   listProps?: ListProps<T>;
+  /**
+   * 使用 List 组件时，滚动加载配置（https://github.com/ankeetmaini/react-infinite-scroll-component）。
+   */
+  infiniteScroll?: Omit<InfiniteScrollProps, 'children'>;
+  /**
+   * 开启无限滚动时，容器的高度。
+   */
+  scrollableDivHeight?: number | string;
 }
+
+function ListComponent<T extends object>({
+  fields,
+  commonProps,
+  listProps,
+}: Omit<TableListProps<T>, 'type'>) {
+  return (
+    <List
+      key="list"
+      {...commonProps}
+      itemLayout="vertical"
+      {...listProps}
+      renderItem={(item) => {
+        const { titles, infos, actions } = getField<T>(fields, item);
+        return (
+          <List.Item actions={actions}>
+            <List.Item.Meta
+              title={titles.map((item, idx) => (
+                <Fragment key={idx}>{item}</Fragment>
+              ))}
+              description={
+                infos.length ? (
+                  <Space>
+                    {infos.map((item, idx) => (
+                      <Fragment key={idx}>{item}</Fragment>
+                    ))}
+                  </Space>
+                ) : null
+              }
+            ></List.Item.Meta>
+          </List.Item>
+        );
+      }}
+    ></List>
+  );
+}
+
 function TableList<T extends object>({
   type = 'table',
   fields,
   commonProps,
   tableProps = {},
   listProps = {},
+  infiniteScroll,
+  scrollableDivHeight = '90vh',
 }: TableListProps<T>) {
   return (
-    <div className={styles['table-list']}>
+    <div>
       {type === 'table' ? (
         <Table {...commonProps} {...tableProps} columns={fields}></Table>
-      ) : (
-        <List
-          key="list"
-          {...commonProps}
-          itemLayout="vertical"
-          {...listProps}
-          renderItem={(item) => {
-            const { titles, infos, actions } = getField<T>(fields, item);
-            return (
-              <List.Item actions={actions}>
-                <List.Item.Meta
-                  title={titles.map((item, idx) => (
-                    <Fragment key={idx}>{item}</Fragment>
-                  ))}
-                  description={
-                    infos.length ? (
-                      <Space>
-                        {infos.map((item, idx) => (
-                          <Fragment key={idx}>{item}</Fragment>
-                        ))}
-                      </Space>
-                    ) : null
-                  }
-                ></List.Item.Meta>
-              </List.Item>
-            );
+      ) : infiniteScroll ? (
+        <div
+          id="scrollableDiv"
+          style={{
+            height:
+              typeof scrollableDivHeight === 'number'
+                ? `${scrollableDivHeight}px`
+                : scrollableDivHeight,
+            overflow: 'auto',
           }}
-        ></List>
+        >
+          <InfiniteScroll scrollableTarget="scrollableDiv" {...infiniteScroll}>
+            <ListComponent
+              fields={fields}
+              commonProps={commonProps}
+              listProps={listProps}
+            ></ListComponent>
+          </InfiniteScroll>
+        </div>
+      ) : (
+        <ListComponent
+          fields={fields}
+          commonProps={commonProps}
+          listProps={listProps}
+        ></ListComponent>
       )}
     </div>
   );

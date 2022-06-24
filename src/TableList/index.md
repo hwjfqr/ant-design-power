@@ -15,4 +15,8 @@ group:
 
 <code src="./demos/index.tsx" />
 
+## 滚动加载
+
+<code src="./demos/infiniteScroll.tsx" />
+
 <API></API>
