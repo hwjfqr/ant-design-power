@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Tag, Space } from 'antd';
-import { TableList } from 'ant-design-power';
+import { ReactiveTable } from 'ant-design-power';
 
 type DataSourceType = {
   id: number;
@@ -66,7 +66,7 @@ function InfiniteScrollDemo() {
         </Button>
       </Space>
       <div style={{ paddingTop: 10 }}>
-        <TableList
+        <ReactiveTable
           type={displayType}
           infiniteScroll={{
             dataLength: list.length,
@@ -124,7 +124,7 @@ function InfiniteScrollDemo() {
               },
             },
           }}
-        ></TableList>
+        ></ReactiveTable>
       </div>
     </div>
   );

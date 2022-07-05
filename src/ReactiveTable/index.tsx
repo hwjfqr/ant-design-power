@@ -8,7 +8,10 @@ import './index.less';
 
 type FieldsType<T> = (ColumnType<T> & { [prop: string]: any })[];
 
-function getField<T extends object>(fields: FieldsType<T>, record: T) {
+function getField<T extends { [prop: string]: any }>(
+  fields: FieldsType<T>,
+  record: T,
+) {
   const titles: ReactNode[] = [];
   const infos: ReactNode[] = [];
   const actions: ReactNode[] = [];
@@ -34,13 +37,15 @@ function getField<T extends object>(fields: FieldsType<T>, record: T) {
   };
 }
 
-interface TableListProps<T extends object> {
+interface ReactiveTableProps<T extends { [prop: string]: any }> {
   /**
    * 展示类型
    */
   type: 'table' | 'list';
   /**
-   * 展示字段，规则与 Table 组件的 columns 字段一致。增加了 type 字段用于标识字段类型，便于在 List 组件展示相关字段，其值如下：title - 标题字段；info - 信息字段；action - 操作字段。
+   * 展示字段，规则与 Table 组件的 columns 字段一致。
+   * 增加了 type 字段用于标识字段类型，便于在 List 组件展示相关字段，其值如下：
+   * title - 标题字段；info - 信息字段；action - 操作字段。
    */
   fields: FieldsType<T>;
   /**
@@ -51,6 +56,15 @@ interface TableListProps<T extends object> {
    * Table 组件的其他 API
    */
   tableProps?: TableProps<T>;
+  /**
+   * 用于启用纵向表格的相关配置（具体用法详见 Demo）：
+   * mainFieldName：指定主字段的名称；
+   * firstCellName：指定表格左上角单元格的名称。
+   */
+  verticalTableLayoutConf?: {
+    mainFieldName: string;
+    firstCellName: string;
+  };
   /**
    * List 组件的其他 API
    */
@@ -65,11 +79,11 @@ interface TableListProps<T extends object> {
   scrollableDivHeight?: number | string;
 }
 
-function ListComponent<T extends object>({
+function ListComponent<T extends { [prop: string]: any }>({
   fields,
   commonProps,
   listProps,
-}: Omit<TableListProps<T>, 'type'>) {
+}: Omit<ReactiveTableProps<T>, 'type'>) {
   return (
     <List
       key="list"
@@ -101,15 +115,85 @@ function ListComponent<T extends object>({
   );
 }
 
-function TableList<T extends object>({
+function ReactiveTable<T extends { [prop: string]: any }>({
   type = 'table',
   fields,
-  commonProps,
+  commonProps = {},
   tableProps = {},
+  verticalTableLayoutConf,
   listProps = {},
   infiniteScroll,
   scrollableDivHeight = '90vh',
-}: TableListProps<T>) {
+}: ReactiveTableProps<T>) {
+  if (verticalTableLayoutConf && type === 'table') {
+    const { mainFieldName, firstCellName } = verticalTableLayoutConf;
+    const verticalTableLayoutFields: FieldsType<T> = [];
+    const verticalTableLayoutDataSource: T[] = [];
+    const data = [...(commonProps.dataSource || [])];
+    let mainField: (ColumnType<T> & { [prop: string]: any }) | undefined =
+      undefined;
+    const cols = [...fields].filter((item) => {
+      const k = (item.dataIndex || item.key) as string;
+      if (k === mainFieldName) {
+        mainField = item;
+        return false;
+      }
+      return true;
+    });
+    if (mainField === undefined) {
+      mainField = cols.shift();
+    }
+    const mainKey = (mainField?.dataIndex || mainField?.key) as string;
+    if (mainKey) {
+      /**
+       * 列的数量就是 data 的长度
+       */
+      data.forEach((item, idx) => {
+        const val = item[mainKey];
+        verticalTableLayoutFields.push({
+          title: mainField?.render ? mainField.render(val, item, idx) : val,
+          dataIndex: val,
+        });
+      });
+    }
+    /**
+     * 每条数据的成员都是同一类型，成员数量就是 verticalTableLayoutFields 的数量（同样也是 data 的数量）。
+     * 数据条数就是 cols 的长度。
+     */
+    cols.forEach((col, i) => {
+      const dataItem: { [prop: string]: any } = {};
+      const key = (col.dataIndex || col.key) as string;
+      for (let idx = 0; idx < verticalTableLayoutFields.length; idx++) {
+        const vField = verticalTableLayoutFields[idx];
+        const vKey = (vField.dataIndex || vField.key) as string;
+        const dItem = data[idx];
+        const val = col.render
+          ? col.render(dItem[key], dItem, idx)
+          : dItem[key];
+        dataItem[vKey] = val;
+      }
+      verticalTableLayoutDataSource.push({
+        ...dataItem,
+        [firstCellName]: col.title,
+        idx: i,
+      } as any);
+    });
+    verticalTableLayoutFields.unshift({
+      title: firstCellName,
+      dataIndex: firstCellName,
+    });
+
+    return (
+      <Table
+        {...commonProps}
+        {...tableProps}
+        columns={verticalTableLayoutFields}
+        dataSource={verticalTableLayoutDataSource}
+        rowKey="idx"
+      ></Table>
+    );
+  }
+
   return (
     <div>
       {type === 'table' ? (
@@ -144,4 +228,4 @@ function TableList<T extends object>({
   );
 }
 
-export default TableList;
+export default ReactiveTable;

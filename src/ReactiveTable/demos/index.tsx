@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Tag, Space } from 'antd';
-import { TableList } from 'ant-design-power';
+import { ReactiveTable } from 'ant-design-power';
 
 const dataSource = [...new Array(100)].map((_, index) => ({
   id: index + 1,
@@ -9,7 +9,7 @@ const dataSource = [...new Array(100)].map((_, index) => ({
   status: 1,
 }));
 
-function TableListDemo() {
+function ReactiveTableDemo() {
   const [displayType, setDisplayType] = useState<'table' | 'list'>('table');
   return (
     <div>
@@ -25,7 +25,7 @@ function TableListDemo() {
         切换显示模式
       </Button>
       <div style={{ paddingTop: 10 }}>
-        <TableList
+        <ReactiveTable
           type={displayType}
           fields={[
             {
@@ -63,10 +63,10 @@ function TableListDemo() {
             dataSource,
             pagination: {},
           }}
-        ></TableList>
+        ></ReactiveTable>
       </div>
     </div>
   );
 }
 
-export default TableListDemo;
+export default ReactiveTableDemo;
