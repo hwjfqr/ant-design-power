@@ -52,7 +52,11 @@ function VerticalTableDemo() {
           type="table"
           verticalTableLayoutConf={{
             mainFieldName: 'date',
-            firstCellName: '科目/年度',
+            firstCol: {
+              title: '科目/年度',
+              dataIndex: 'subject',
+              fixed: 'left',
+            },
           }}
           fields={[
             {

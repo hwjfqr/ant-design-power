@@ -63,7 +63,7 @@ interface ReactiveTableProps<T extends { [prop: string]: any }> {
    */
   verticalTableLayoutConf?: {
     mainFieldName: string;
-    firstCellName: string;
+    firstCol: ColumnType<T> & { [prop: string]: any };
   };
   /**
    * List 组件的其他 API
@@ -126,7 +126,7 @@ function ReactiveTable<T extends { [prop: string]: any }>({
   scrollableDivHeight = '90vh',
 }: ReactiveTableProps<T>) {
   if (verticalTableLayoutConf && type === 'table') {
-    const { mainFieldName, firstCellName } = verticalTableLayoutConf;
+    const { mainFieldName, firstCol } = verticalTableLayoutConf;
     const verticalTableLayoutFields: FieldsType<T> = [];
     const verticalTableLayoutDataSource: T[] = [];
     const data = [...(commonProps.dataSource || [])];
@@ -172,16 +172,14 @@ function ReactiveTable<T extends { [prop: string]: any }>({
           : dItem[key];
         dataItem[vKey] = val;
       }
+      const firstColKey = (firstCol.dataIndex || firstCol.key) as string;
       verticalTableLayoutDataSource.push({
         ...dataItem,
-        [firstCellName]: col.title,
+        [firstColKey]: col.title,
         idx: i,
       } as any);
     });
-    verticalTableLayoutFields.unshift({
-      title: firstCellName,
-      dataIndex: firstCellName,
-    });
+    verticalTableLayoutFields.unshift(firstCol);
 
     return (
       <Table
