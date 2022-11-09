@@ -49,4 +49,6 @@ export default defineConfig({
     type: 'hash',
   },
   hash: true,
+  // 开启按需加载
+  dynamicImport: {},
 });

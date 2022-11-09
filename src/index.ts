@@ -5,7 +5,6 @@ import ModalDetail from './ModalDetail';
 import QuickRangePicker from './QuickRangePicker';
 import EditableTag from './EditableTag';
 import EditableTree from './EditableTree';
-import ProgressLoading from './ProgressLoading';
 import ReactiveTable from './ReactiveTable';
 
 /* 
@@ -22,7 +21,6 @@ export {
   QuickRangePicker,
   EditableTag,
   EditableTree,
-  ProgressLoading,
   ReactiveTable as TableList, // 组件更名，兼容旧版本。
   ReactiveTable,
 };
@@ -34,7 +32,6 @@ export default {
   QuickRangePicker,
   EditableTag,
   EditableTree,
-  ProgressLoading,
   TableList: ReactiveTable,
   ReactiveTable,
 };
