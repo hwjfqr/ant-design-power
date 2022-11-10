@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Tag, Input, Tooltip } from 'antd';
+import type { InputRef } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { TagProps } from 'antd/es/tag';
 import { InputProps } from 'antd/es/input';
@@ -49,13 +50,13 @@ function EditableTag({ value, onChange, addTxt = '添加' }: EditableTagProps) {
     setEditInputArgs({ index: -1, value: '' });
   };
 
-  const editInputRef = useRef<Input>(null);
+  const editInputRef = useRef<InputRef>(null);
   useEffect(() => {
     if (editInputRef.current) {
       editInputRef.current.focus();
     }
   }, [editInputArgs]);
-  const inputRef = useRef<Input>(null);
+  const inputRef = useRef<InputRef>(null);
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();

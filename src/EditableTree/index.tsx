@@ -13,12 +13,12 @@ export type DataNodeType = DataNode & {
   children?: DataNodeType[];
   [prop: string]: any;
 };
-type TreeEditingMethodType = {
+export type TreeEditingMethodType = {
   addItem?: (nodeInfo: DataNodeType) => void;
   editItem?: (nodeInfo: DataNodeType) => void;
   deleteItem?: (nodeInfo: DataNodeType) => void;
 };
-interface EditableTreeProps extends TreeProps {
+export interface EditableTreeProps extends TreeProps {
   /**
    * 树数据
    */
@@ -114,15 +114,29 @@ function EditableTree({
   };
   const dataTransform: (data: DataNodeType[]) => DataNodeType[] = (data) => {
     return data.map((item) => {
-      const { title, children } = item;
+      const { title, icon, children, ...rest } = item;
       return {
-        ...item,
         title: (
           <TreeRightClickMenu nodeInfo={{ ...item }}>
-            {title}
+            {icon ? (
+              <span
+                style={{
+                  display: 'inline-block',
+                  width: '24px',
+                  height: '24px',
+                  lineHeight: '24px',
+                  textAlign: 'center',
+                  verticalAlign: 'top',
+                }}
+              >
+                {typeof icon === 'function' ? icon(item as any) : icon}
+              </span>
+            ) : null}
+            <span>{typeof title === 'function' ? title(item) : title}</span>
           </TreeRightClickMenu>
         ),
         children: children ? dataTransform(children) : undefined,
+        ...rest,
       };
     });
   };

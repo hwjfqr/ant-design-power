@@ -16,7 +16,8 @@
     },
     "allowSyntheticDefaultImports": true,
     "declaration": true,
-    "typeRoots": ["./typings", "node_modules/@types"]
+    "typeRoots": ["./typings", "node_modules/@types"],
+    "skipLibCheck": true
   },
   "exclude": [
     "node_modules",

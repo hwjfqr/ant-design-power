@@ -1,24 +1,29 @@
 import React, { useState } from 'react';
 import { Form, Input, Modal } from 'antd';
 import { EditableTree, ModalForm } from 'ant-design-power';
+import { EditOutlined } from '@ant-design/icons';
 import { DataNodeType } from '..';
 
 const data = [
   {
     title: 'parent 1',
     key: '0-0',
+    icon: <EditOutlined />,
     children: [
       {
         title: 'parent 1-0',
         key: '0-0-0',
+        icon: <EditOutlined />,
         children: [
           {
             title: 'leaf',
             key: '0-0-0-0',
+            icon: <EditOutlined />,
           },
           {
             title: 'leaf',
             key: '0-0-0-1',
+            icon: <EditOutlined />,
           },
         ],
       },

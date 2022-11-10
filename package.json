@@ -1,6 +1,6 @@
 {
   "name": "ant-design-power",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "scripts": {
     "start": "dumi dev",
     "docs:build": "dumi build",
@@ -52,8 +52,8 @@
     "react-infinite-scroll-component": "^6.1.0"
   },
   "devDependencies": {
-    "@types/react": "^17.0.37",
-    "@types/react-dom": "^17.0.11",
+    "@types/react": "^18.0.25",
+    "@types/react-dom": "^18.0.8",
     "@umijs/plugin-locale": "^0.14.2",
     "@umijs/test": "^3.0.5",
     "antd": "^4.16.13",
@@ -65,6 +65,7 @@
     "moment": "^2.29.1",
     "prettier": "^2.2.1",
     "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "yorkie": "^2.0.0"
   }
 }

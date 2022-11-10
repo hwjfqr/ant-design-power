@@ -3,17 +3,6 @@ import { Modal, Form } from 'antd';
 import { ModalProps } from 'antd/es/modal';
 import { FormProps, FormInstance } from 'antd/es/form';
 
-/* 
-  T - { name:string; age:number }
-  实现一个工具类型，传入类型 T，结果类型为 { name:string } 或 { age:number } 
-*/
-// type SingleValueType<O, K extends keyof O> = K extends string
-//   ? {
-//       [key in K]: O[K];
-//     }
-//   : never;
-// type GetSingleValueType<O> = SingleValueType<O, keyof O>;
-
 export interface ModalFormType<T> {
   /**
    * 标题。
@@ -80,9 +69,11 @@ function ModalForm<T extends { [prop: string]: unknown }>({
 
   return (
     <Modal
-      title={title}
+      title={visible ? title : '-'}
       visible={visible}
       forceRender
+      keyboard={false}
+      maskClosable={false}
       okText="提交"
       onCancel={() => {
         onClose();

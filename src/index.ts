@@ -6,6 +6,7 @@ import QuickRangePicker from './QuickRangePicker';
 import EditableTag from './EditableTag';
 import EditableTree from './EditableTree';
 import ReactiveTable from './ReactiveTable';
+import UploadInForm from './UploadInForm';
 
 /* 
   解决编译出错问题的参考：
@@ -23,6 +24,7 @@ export {
   EditableTree,
   ReactiveTable as TableList, // 组件更名，兼容旧版本。
   ReactiveTable,
+  UploadInForm,
 };
 export default {
   CountdownButton,
@@ -34,4 +36,5 @@ export default {
   EditableTree,
   TableList: ReactiveTable,
   ReactiveTable,
+  UploadInForm,
 };
