@@ -6,7 +6,10 @@ import type { TableProps, ColumnType } from 'antd/es/table/index';
 import type { ListProps } from 'antd/es/list/index';
 import './index.less';
 
-type FieldsType<T> = (ColumnType<T> & { [prop: string]: any })[];
+export type FieldsType<T> = (ColumnType<T> & {
+  type?: 'title' | 'info' | 'action';
+  [prop: string]: any;
+})[];
 
 function getField<T extends { [prop: string]: any }>(
   fields: FieldsType<T>,
@@ -77,21 +80,35 @@ interface ReactiveTableProps<T extends { [prop: string]: any }> {
    * 开启无限滚动时，容器的高度。
    */
   scrollableDivHeight?: number | string;
+  /**
+   * 自定义 List 组件的 renderItem 方法
+   */
+  renderListItem?: (
+    fields: {
+      titles: ReactNode[];
+      infos: ReactNode[];
+      actions: ReactNode[];
+    },
+    record: { [prop: string]: any },
+  ) => ReactNode;
 }
 
 function ListComponent<T extends { [prop: string]: any }>({
   fields,
   commonProps,
   listProps,
+  renderListItem,
 }: Omit<ReactiveTableProps<T>, 'type'>) {
   return (
     <List
       key="list"
       {...commonProps}
       itemLayout="vertical"
-      {...listProps}
       renderItem={(item) => {
         const { titles, infos, actions } = getField<T>(fields, item);
+        if (renderListItem) {
+          return renderListItem({ titles, infos, actions }, item);
+        }
         return (
           <List.Item actions={actions}>
             <List.Item.Meta
@@ -111,6 +128,7 @@ function ListComponent<T extends { [prop: string]: any }>({
           </List.Item>
         );
       }}
+      {...listProps}
     ></List>
   );
 }
@@ -124,6 +142,7 @@ function ReactiveTable<T extends { [prop: string]: any }>({
   listProps = {},
   infiniteScroll,
   scrollableDivHeight = '90vh',
+  renderListItem,
 }: ReactiveTableProps<T>) {
   if (verticalTableLayoutConf && type === 'table') {
     const { mainFieldName, firstCol } = verticalTableLayoutConf;
@@ -195,7 +214,7 @@ function ReactiveTable<T extends { [prop: string]: any }>({
   return (
     <div>
       {type === 'table' ? (
-        <Table {...commonProps} {...tableProps} columns={fields}></Table>
+        <Table {...commonProps} columns={fields} {...tableProps}></Table>
       ) : infiniteScroll ? (
         <div
           id="scrollableDiv"
@@ -212,6 +231,7 @@ function ReactiveTable<T extends { [prop: string]: any }>({
               fields={fields}
               commonProps={commonProps}
               listProps={listProps}
+              renderListItem={renderListItem}
             ></ListComponent>
           </InfiniteScroll>
         </div>
@@ -220,6 +240,7 @@ function ReactiveTable<T extends { [prop: string]: any }>({
           fields={fields}
           commonProps={commonProps}
           listProps={listProps}
+          renderListItem={renderListItem}
         ></ListComponent>
       )}
     </div>
