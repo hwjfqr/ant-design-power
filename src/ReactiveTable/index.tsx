@@ -112,9 +112,13 @@ function ListComponent<T extends { [prop: string]: any }>({
         return (
           <List.Item actions={actions}>
             <List.Item.Meta
-              title={titles.map((item, idx) => (
-                <Fragment key={idx}>{item}</Fragment>
-              ))}
+              title={
+                <Space>
+                  {titles.map((item, idx) => (
+                    <Fragment key={idx}>{item}</Fragment>
+                  ))}
+                </Space>
+              }
               description={
                 infos.length ? (
                   <Space>
