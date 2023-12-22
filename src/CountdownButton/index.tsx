@@ -11,6 +11,10 @@ interface CountdownButtonType
    */
   maxSecondNum?: number;
   /**
+   * 按钮是否进入读秒状态的初始值
+   */
+  timingInitialValue?: boolean;
+  /**
    * 按钮默认文本
    */
   txt?: string;
@@ -29,6 +33,7 @@ interface CountdownButtonType
 }
 function CountdownButton({
   maxSecondNum = MAX_SECOND_NUM,
+  timingInitialValue = false,
   txt = '获取验证码',
   loadingTxt = '发送中',
   disabledTxt = (s) => `${s} 秒后重试`,
@@ -38,9 +43,10 @@ function CountdownButton({
   ...rest
 }: CountdownButtonType) {
   const [authCodeArgs, setAuthCodeArgs] = useState({
-    timing: false,
+    timing: timingInitialValue,
     count: maxSecondNum,
   });
+
   useEffect(() => {
     let timer: number | undefined = undefined;
     if (authCodeArgs.timing) {
